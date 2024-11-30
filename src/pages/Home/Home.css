@@ -15,7 +15,6 @@
   z-index: -1;
 }
 
-
 .featuredHead h1 {
   font-size: 32px;
   font-weight: 600;
@@ -28,6 +27,8 @@
   flex-wrap: wrap;
   gap: 20px;
   justify-content: start;
+  width: 90%;
+  margin: auto;
 }
 
 .featuredContent > div {
@@ -43,10 +44,10 @@
 
 @media only screen and (max-width: 992px) {
   .featuredHead h1 {
-    font-size: 28px; /* Adjust heading size */
+    font-size: 28px;
   }
   .featuredContent > div {
-    flex: 1 1 220px; /* Adjust card size */
+    flex: 1 1 220px;
   }
 }
 
