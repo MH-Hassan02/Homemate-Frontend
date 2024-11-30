@@ -1,16 +1,20 @@
 .bgPicContainer {
-  background-image: url(~@/images/homepage-background.png);
+  position: relative;
   width: 100%;
   height: 100vh;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+  overflow: hidden;
 }
 
-.cardContainer {
-  width: 90%;
-  margin: 20px auto; 
+.bgImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
 }
+
 
 .featuredHead h1 {
   font-size: 32px;

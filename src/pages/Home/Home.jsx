@@ -9,6 +9,7 @@ import Hero from "../../components/Hero/Hero";
 import Location from "../../components/Location/Location";
 import LocationMobile from "../../components/Location/LocationMobile";
 import Card from "../../components/Card/Card";
+import bgImage from "../../images/homepage-background.png"
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
@@ -45,9 +46,14 @@ const Home = () => {
   return (
     <>
       <div className="bgPicContainer">
-        <Navbar />
-        <Hero />
-      </div>
+  <img 
+    src={bgImage} 
+    alt="Background" 
+    className="bgImage" 
+  />
+  <Navbar />
+  <Hero />
+</div>
 
       {isMobile ? <LocationMobile /> : <Location />}
 
