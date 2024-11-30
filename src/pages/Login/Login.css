@@ -1,0 +1,31 @@
+.eMail,
+.passWord {
+  border: 1px solid #af8fe9;
+}
+
+.lgBtn {
+  background-color: #af8fe9;
+}
+
+.rightC {
+  width: 50%;
+}
+
+.flex {
+  display: flex;
+}
+
+.h-screen {
+  height: 100vh; /* Ensure the height is 100% of the viewport */
+}
+
+.imgDiv {
+  width: 100%;
+  height: 100%; /* Make sure the container takes up full height */
+}
+
+.mainImg {
+  margin: 0 auto;
+  height: 100%;
+  object-fit: cover; /* Ensures the image covers the container while maintaining its aspect ratio */
+}

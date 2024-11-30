@@ -1,0 +1,79 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins";
+}
+
+:root {
+  --purple-color: #9f7be2;
+  --purple-color-hover: #8a59e6;
+}
+
+.detailsContainer {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  align-items: flex-start;
+}
+
+@media only screen and (min-width: 1400px) {
+  .detailsPageContainer {
+    margin-left: 5%;
+    margin-right: 5%;
+    width: 90%;
+  }
+}
+
+@media only screen and (min-width: 1700px) {
+  .detailsPageContainer {
+    margin-left: 10%;
+    margin-right: 10%;
+    width: 80%;
+  }
+}
+
+@media only screen and (min-width: 1900px) {
+  .detailsPageContainer {
+    margin-left: 15%;
+    margin-right: 15%;
+    width: 70%;
+  }
+}
+
+@media only screen and (min-width: 2000px) {
+  :root {
+    margin-left: 15%;
+    margin-right: 15%;
+    width: 70%;
+  }
+  .detailsPageContainer {
+    margin-left: 0%;
+    margin-right: 0%;
+    width: 100%;
+  }
+}
+
+@media only screen and (min-width: 2600px) {
+  :root {
+    margin-left: 25%;
+    margin-right: 25%;
+    width: 50%;
+  }
+}
+
+@media only screen and (min-width: 3500px) {
+  :root {
+    margin-left: 33%;
+    margin-right: 33%;
+    width: 34%;
+  }
+}
+
+@media only screen and (min-width: 4000px) {
+  :root {
+    margin-left: 37.5%;
+    margin-right: 37.5%;
+    width: 25%;
+  }
+}

@@ -1,0 +1,176 @@
+/* General styling */
+.bookMain {
+  position: sticky;
+  top: 100px;
+  display: flex;
+  flex-direction: column;
+  width: 25%;
+  margin-top: 50px;
+}
+
+.bookMainModal{
+  width: 100%;
+}
+
+/* Rate Panel */
+.ratePanel {
+  background-color: #000;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  gap: 5px;
+  font-size: 24px;
+  width: 100%;
+}
+
+/* Form Panel */
+.formPanel {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  gap: 20px;
+  font-size: 14px;
+}
+
+.formPanel input {
+  height: 50px;
+  width: 100%;
+  outline: none;
+  padding: 0 15px;
+  border-radius: 10px;
+  border: 1px solid #0000003a;
+}
+
+.formPanel textarea {
+  width: 100%;
+  height: 150px;
+  outline: none;
+  border-radius: 10px;
+  padding: 15px;
+  border: 1px solid #0000003a;
+}
+
+.formPanel textarea:focus,
+.formPanel input:focus {
+  border: 1px solid #0000009c;
+}
+
+/* Book Button */
+.bookBtn {
+  width: 100%;
+  height: 50px;
+  text-align: center;
+  color: #fff;
+  font-size: 16px;
+  background-color: var(--purple-color);
+  border-radius: 10px;
+}
+
+.bookBtn:hover {
+  background-color: var(--purple-color-hover);
+}
+
+/* Disclaimer Panel */
+.disclaimerPanel {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.disclaimerPanel p {
+  color: #0000006c;
+  font-size: 12px;
+  display: flex;
+  align-items: start;
+  gap: 10px;
+}
+
+.disclaimerPanel span {
+  height: 20px;
+  min-width: 20px;
+  border: 1px solid #0000003a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 10px;
+  color: #0000003a;
+}
+
+/* Modal Styling */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: #fff; /* White background for modal */
+  padding: 0px 20px 30px 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+}
+
+.closeModalBtn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Floating Button */
+.floatingBtn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: var(--purple-color);
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  border: none;
+  transition: opacity 0.3s ease;
+}
+
+.floatingBtn:hover {
+  background-color: var(--purple-color-hover);
+}
+
+.floatingBtn.hide {
+  display: none;
+}
+
+@media only screen and (max-width: 1023px) {
+  .floatingBtn {
+    display: flex;
+  }
+  
+  .bookMain.modalHidden {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+.floatingBtn{
+  bottom: 70px;
+  right: 10px;
+}
+}

@@ -1,0 +1,112 @@
+/* Container for the signup page */
+.signup-container {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  justify-content: space-between;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Left section styles */
+.signup-left {
+  width: 100%;
+  max-width: 50%;
+  background-color: #f9fafb; /* bg-gray-50 equivalent */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+/* Container for form content */
+.signup-form-container {
+  max-width: 400px;
+  width: 100%;
+}
+
+/* Logo section */
+.signup-logo img {
+  height: 2.5rem; /* h-10 equivalent */
+  margin-bottom: 1rem;
+}
+
+/* Form title */
+.signup-title {
+  font-size: 1.5rem; /* text-2xl equivalent */
+  font-weight: 600; /* font-semibold equivalent */
+  margin-bottom: 1rem;
+}
+
+/* Error message */
+.signup-error {
+  color: #f56565; /* text-red-500 equivalent */
+  margin-bottom: 1rem;
+}
+
+/* Input fields */
+.signup-input {
+  border: 2px solid #af8fe9;
+  border-radius: 0.375rem; /* rounded-md */
+  padding: 0.75rem;
+  width: 100%;
+  margin-bottom: 0.75rem;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.signup-input:focus {
+  border-color: #6366f1; /* focus:border-primary equivalent */
+}
+
+/* Login text */
+.signup-login-text {
+  margin: 1rem 0;
+  color: #718096; /* text-secondary equivalent */
+}
+
+.signup-login-link {
+  color: #6366f1; /* text-primary equivalent */
+  text-decoration: underline;
+}
+
+/* Button styles */
+.signup-btn {
+  background-color: #af8fe9; /* bg-primary equivalent */
+  color: #fff;
+  padding: 0.75rem 0;
+  width: 100%;
+  border-radius: 0.375rem;
+  text-align: center;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.signup-btn:disabled,
+.signup-btn-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Right section styles (image) */
+.signup-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  height: 100vh;
+}
+
+.signup-right img {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .signup-right {
+    display: none;
+  }
+
+  .signup-left{
+    max-width: 100%;
+  }
+}

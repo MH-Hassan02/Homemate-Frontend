@@ -1,0 +1,104 @@
+.heroMain {
+  width: 70%;
+  height: calc(100% - 64px);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.heroMain h1 {
+  font-size: 64px;
+  font-weight: 800;
+  text-align: center;
+  line-height: 80px;
+  font-family: "CustomFont";
+}
+
+.heroMain span {
+  display: block;
+  color: #fff;
+  font-family: "CustomFont";
+}
+
+.heroSearch {
+  display: flex;
+  align-items: center;
+  width: 60%;
+}
+
+.heroSearch input {
+  height: 40px;
+  width: 100%;
+  border-radius: 20px;
+  padding: 5px 60px 5px 30px;
+  font-size: 14px;
+  outline: none;
+}
+
+.heroSearchicon {
+  font-size: 14px;
+  margin-left: -50px;
+  color: #fff;
+  background-color: var(--purple-color);
+  padding: 8px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.heroSearchicon:hover {
+  background-color: var(--purple-color-hover);
+}
+
+@media only screen and (max-width: 800px) {
+  .heroMain h1 {
+    font-size: 32px;
+    line-height: 40px;
+  } 
+}
+
+@media only screen and (max-width: 450px) {
+  .heroMain h1 {
+    font-size: 32px;
+    line-height: 40px;
+  }
+  .heroSearch{
+    width: 100%;
+  }
+}
+
+@media only screen and (min-width: 1440px) and (max-width: 1900px) {
+  .heroMain h1 {
+    font-size: 70px;
+    line-height: 88px;
+  }
+
+  .heroSearch input {
+    height: 44px;
+    font-size: 16px;
+  }
+
+  .heroSearchicon {
+    font-size: 16px;
+    padding: 9px 12px;
+  }
+}
+
+@media only screen and (min-width: 1900px) and (max-width: 1999px) {
+  .heroMain h1 {
+    font-size: 77px;
+    line-height: 96px;
+  }
+
+  .heroSearch input {
+    height: 48px;
+    font-size: 17px;
+  }
+
+  .heroSearchicon {
+    font-size: 17px;
+    padding: 10px 14px;
+  }
+}
