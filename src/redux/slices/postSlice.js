@@ -138,7 +138,6 @@
 
 // export default postSlice.reducer;
 
-
 // src/redux/slices/postSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
@@ -231,20 +230,9 @@ export const removeFavorite = createAsyncThunk(
 export const fetchPostsByArea = createAsyncThunk(
   "posts/fetchPostsByArea",
   async (area, { rejectWithValue }) => {
-    const token = localStorage.getItem("authToken");
-
-    if (!token) {
-      return rejectWithValue("Authorization token is missing");
-    }
-
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/posts/search?area=${area}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        `${import.meta.env.VITE_BASE_URL}/posts/search?area=${area}`
       );
       return response.data;
     } catch (error) {
@@ -254,7 +242,6 @@ export const fetchPostsByArea = createAsyncThunk(
     }
   }
 );
-
 
 const postSlice = createSlice({
   name: "posts",

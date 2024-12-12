@@ -202,7 +202,7 @@ const PostDetails = ({ post, isMobile }) => {
             ></iframe>
           </div>
         </div>
-        <Rating />
+        <Rating post={post}/>
       </div>
     </>
   );

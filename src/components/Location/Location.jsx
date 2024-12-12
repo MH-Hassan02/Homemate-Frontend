@@ -6,7 +6,6 @@ const Location = () => {
   const navigate = useNavigate();
 
   const handleLocationClick = (area) => {
-    // Navigate to the new page with the area as a query parameter
     navigate(`/search?area=${area}`);
   };
 

@@ -7,7 +7,6 @@ export const registerUser = createAsyncThunk(
   "user/register",
   async (userData, { rejectWithValue }) => {
     try {
-      console.log(userData, "userData")
       const response = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/auth/signup`,
         userData
@@ -54,6 +53,7 @@ export const fetchUser = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log(response.data, "response.data")
       return response.data;
     } catch (error) {
       localStorage.removeItem('authToken');
