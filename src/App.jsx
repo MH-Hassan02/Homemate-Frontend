@@ -19,7 +19,7 @@ import { useEffect, useState } from "react";
 import Explore from "./pages/Explore/Explore.jsx";
 import PostsByArea from "./components/PostsByArea.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
-import loadingAnimation from "./assets/animation.gif";
+import loadingAnimation from "./assets/Animation.gif";
 
 function App() {
   const [loading, setLoading] = useState(true);
