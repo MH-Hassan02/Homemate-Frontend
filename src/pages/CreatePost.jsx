@@ -18,6 +18,10 @@ import { MapContainer, TileLayer, useMapEvents, Marker } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer/Footer";
+import { ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const amenitiesOptions = [
   { id: 1, label: "Wi-Fi", icon: <BsWifi /> },
@@ -64,7 +68,14 @@ const CreatePost = () => {
   const [utilityBill, setUtilityBill] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const options = ["malir", "jauhar", "maymar","bahadurabad", "saddar", "gulshan"];
+  const areaOptions = [
+    "Malir",
+    "Jauhar",
+    "Maymar",
+    "Bahadurabad",
+    "Saddar",
+    "Gulshan",
+  ];
 
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -89,8 +100,11 @@ const CreatePost = () => {
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (!token) {
-      alert("You must be logged in to create a post. Redirecting to login...");
-      navigate("/login");
+      toast.error("Please log in to submit the form.", {
+        autoClose: 3000,
+        pauseOnHover: false,
+        draggable: false,
+      });
     }
   }, [navigate]);
 
@@ -104,7 +118,28 @@ const CreatePost = () => {
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-    setImages(files);
+
+    setImages((prevImages) => {
+      if (prevImages.length >= 5) {
+        toast.error("You can only upload a maximum of 5 images!", {
+          autoClose: 3000,
+          pauseOnHover: false,
+          draggable: false,
+        });
+        return prevImages;
+      }
+
+      const updatedImages = [...prevImages, ...files];
+      if (updatedImages.length > 5) {
+        toast.error("You can only upload a maximum of 5 images!", {
+          autoClose: 3000,
+          pauseOnHover: false,
+          draggable: false,
+        });
+      }
+
+      return updatedImages.slice(0, 5);
+    });
   };
 
   const handleRemoveImage = (index) => {
@@ -134,42 +169,47 @@ const CreatePost = () => {
 
   const onSubmit = async (data) => {
     setIsLoading(true);
+    const token = localStorage.getItem("authToken");
 
     try {
-      const token = localStorage.getItem("authToken");
-
-      if (!token) {
-        alert("Please log in to submit the form.");
-        return;
-      }
-
-      // Create FormData for image uploads
-      const formDataImages = new FormData();
-      images.forEach((image) => formDataImages.append("images", image)); // Append images
-
-      // Upload images to Cloudinary
-      const responseImages = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/api/upload/images`,
-        formDataImages, // FormData should be the second argument
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
+      if (images.length === 0 || !selectedOption || !location || !utilityBill) {
+        if (images.length === 0) {
+          toast.error("Please upload images.", {
+            autoClose: 3000,
+            pauseOnHover: false,
+            draggable: false,
+          });
         }
-      );
+        if (!selectedOption) {
+          toast.error("Please select amenities and area.", {
+            autoClose: 3000,
+            pauseOnHover: false,
+            draggable: false,
+          });
+        }
+        if (!location) {
+          toast.error("Please mark location.", {
+            autoClose: 3000,
+            pauseOnHover: false,
+            draggable: false,
+          });
+        }
+        if (!utilityBill) {
+          toast.error("Please upload utility bill image.", {
+            autoClose: 3000,
+            pauseOnHover: false,
+            draggable: false,
+          });
+        }
+      } else {
+        // Create FormData for image uploads
+        const formDataImages = new FormData();
+        images.forEach((image) => formDataImages.append("images", image)); // Append images
 
-      // Ensure API returns an array of image URLs
-      const imageUrls = responseImages.data.imageUrls || []; // Modify according to actual API response
-
-      // Upload utility bill if provided
-      let utilityBillUrl = null;
-      if (utilityBill) {
-        const formDataUtility = new FormData();
-        formDataUtility.append("utility", utilityBill);
-        const responseUtility = await axios.post(
-          `${import.meta.env.VITE_BASE_URL}/api/upload/utilityimage`,
-          formDataUtility,
+        // Upload images to Cloudinary
+        const responseImages = await axios.post(
+          `${import.meta.env.VITE_BASE_URL}/api/upload/images`,
+          formDataImages, // FormData should be the second argument
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -177,57 +217,93 @@ const CreatePost = () => {
             },
           }
         );
-        utilityBillUrl = responseUtility.data.imageUrl || null;
-      }
 
-      // Prepare the post data
-      const postData = {
-        title: data.title,
-        address: data.address,
-        description: data.description,
-        area: data.area,
-        details: [
-          {
-            peopleLiving: parseInt(data.people),
-            bedsAvailable: parseInt(data.beds),
-          },
-        ],
-        price: parseInt(data.rent),
-        deposit: parseInt(data.deposit),
-        amenities: selectedAmenities,
-        images: imageUrls,
-        location: {
-          longitude: location[1],
-          latitude: location[0],
-        },
-        utilityBill:
-          utilityBillUrl ||
-          "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg",
-        ratings: 0,
-        remarks: "",
-        featuredAdd: false,
-      };
+        // Ensure API returns an array of image URLs
+        const imageUrls = responseImages.data.imageUrls || []; // Modify according to actual API response
 
-      // Send the post data to your API with authorization header
-      const response = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/posts/createpost`,
-        postData,
-        {
-          headers: {
-            Authorization: token ? `Bearer ${token}` : undefined,
-          },
+        // Upload utility bill if provided
+        let utilityBillUrl = null;
+        if (utilityBill) {
+          const formDataUtility = new FormData();
+          formDataUtility.append("utility", utilityBill);
+          const responseUtility = await axios.post(
+            `${import.meta.env.VITE_BASE_URL}/api/upload/utilityimage`,
+            formDataUtility,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
+          utilityBillUrl = responseUtility.data.imageUrl || null;
         }
-      );
 
-      if (response.status === 200) {
-        alert("Post created successfully!");
-        navigate("/"); // Redirect to the homepage or a success page
-      } else {
-        alert("Failed to create post. Please try again.");
+        // Prepare the post data
+        const postData = {
+          title: data.title,
+          address: data.address,
+          description: data.description,
+          area: data.area,
+          details: [
+            {
+              peopleLiving: parseInt(data.people),
+              bedsAvailable: parseInt(data.beds),
+            },
+          ],
+          price: parseInt(data.rent),
+          deposit: parseInt(data.deposit),
+          amenities: selectedAmenities,
+          images: imageUrls,
+          location: {
+            longitude: location[1],
+            latitude: location[0],
+          },
+          utilityBill:
+            utilityBillUrl ||
+            "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg",
+          ratings: 0,
+          remarks: "",
+          featuredAdd: false,
+        };
+
+        // Send the post data to your API with authorization header
+        const response = await axios.post(
+          `${import.meta.env.VITE_BASE_URL}/posts/createpost`,
+          postData,
+          {
+            headers: {
+              Authorization: token ? `Bearer ${token}` : undefined,
+            },
+          }
+        );
+
+        if (response.status === 200) {
+          toast.success("Post created successfully!", {
+            autoClose: 3000,
+            pauseOnHover: false,
+            draggable: false,
+            onClose: () => {
+              navigate("/");
+            },
+          });
+        } else {
+          toast.error("Failed to create post. Please try again.", {
+            autoClose: 3000,
+            pauseOnHover: false,
+            draggable: false,
+          });
+        }
       }
     } catch (error) {
-      console.error("Error creating post:", error);
-      alert("Error creating post. Please try again.");
+      toast.error(
+        `Error creating post. Please try again. ${error?.message || ""}`,
+        {
+          autoClose: 3000,
+          pauseOnHover: false,
+          draggable: false,
+        }
+      );
     } finally {
       setIsLoading(false); // Reset loading state
     }
@@ -238,7 +314,9 @@ const CreatePost = () => {
       <Navbar />
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col justify-center space-y-4 p-6 font-Poppins max-w-screen-xl m-auto overflow-auto"
+        className={`flex flex-col justify-center space-y-4 p-6 font-Poppins max-w-screen-xl m-auto overflow-auto  ${
+          isLoading ? "opacity-50 cursor-not-allowed" : ""
+        }`}
       >
         <h1 className="text-4xl font-semibold font-Poppins">Rent your place</h1>
         <input
@@ -430,7 +508,8 @@ const CreatePost = () => {
             </ul>
           )}
         </div>
-        {/* **new work** */}
+
+        <h1 className="text-4xl font-semibold font-Poppins">Area</h1>
         <div className="relative w-full">
           <button
             type="button"
@@ -461,9 +540,9 @@ const CreatePost = () => {
           {showDropdown && (
             <ul
               role="listbox"
-              className="absolute z-10 mt-1 w-full bg-white border-2 border-primary rounded-md shadow-lg max-h-60 overflow-auto focus:outline-none"
+              className="relative z-10 mt-1 w-full bg-white border-2 border-primary rounded-md shadow-lg max-h-60 overflow-auto focus:outline-none"
             >
-              {options.map((option, index) => (
+              {areaOptions.map((option, index) => (
                 <li
                   key={index}
                   className={`p-2 cursor-pointer hover:bg-primary hover:text-white ${
@@ -486,7 +565,7 @@ const CreatePost = () => {
             <span className="text-red-500">{errors.area.message}</span>
           )}
         </div>
-        {/* **new work** */}
+
         <h1 className="text-4xl font-semibold font-Poppins">Location</h1>
         <button
           type="button"
@@ -520,6 +599,8 @@ const CreatePost = () => {
           </button>
         </div>
       </form>
+      <Footer />
+      <ToastContainer />
     </>
   );
 };

@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import Navbar from '../components/Navbar';
 import { useNavigate } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
+import Footer from '../components/Footer/Footer';
 
 const PersonalInfo = () => {
   const { userInfo } = useSelector((state) => state.user);
@@ -86,6 +87,8 @@ const PersonalInfo = () => {
           </div>
         </div>
       </div>
+      <Footer />
+
     </>
   );
 };

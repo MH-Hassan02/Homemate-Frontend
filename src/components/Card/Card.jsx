@@ -75,10 +75,6 @@ const Card = ({ post }) => {
   return (
     <div className="card-container">
       <Link to={`/post/${post._id}`} className="card-link">
-        <div className="favorite-icon" onClick={handleFavoriteToggle}>
-          {isFavorited ? <FaHeart color="red" /> : <FiHeart color="black" />}
-        </div>
-
         <div className="image-slider">
           <Slider {...sliderSettings}>
             {post.images.map((image, index) => (
@@ -92,13 +88,26 @@ const Card = ({ post }) => {
             ))}
           </Slider>
         </div>
+
         <div className="card-content">
           <h3 className="card-title">{post.title}</h3>
           <p className="card-host">{post.address}</p>
           <p className="card-status">
             {post.details[0]?.bedsAvailable > 0 ? "Available" : "Sold out"}
           </p>
-          View Details
+
+          <div className="card-footer">
+            <span className="view-details">View Details</span>
+            {userInfo && (
+              <div className="favorite-icon" onClick={handleFavoriteToggle}>
+                {isFavorited ? (
+                  <FaHeart color="red" />
+                ) : (
+                  <FiHeart color="black" />
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </Link>
     </div>

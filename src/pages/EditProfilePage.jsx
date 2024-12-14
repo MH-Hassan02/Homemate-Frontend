@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import Footer from "../components/Footer/Footer";
 
 const EditProfilePage = () => {
   const [avatar, setAvatar] = useState(
@@ -162,8 +163,8 @@ const EditProfilePage = () => {
   return (
     <>
       <Navbar />
-      <div className="bg-gray-100 min-h-screen flex font-Poppins">
-        <div className="bg-white shadow-lg w-full p-6 flex flex-col lg:flex-row">
+      <div className="min-h-100% flex font-Poppins">
+        <div className="w-full p-6 flex flex-col lg:flex-row">
           {/* Left Sidebar */}
           <div className="w-full lg:w-1/4 mb-4 lg:mb-0 lg:mr-8">
             <div className="bg-gray-50 rounded-lg shadow-md p-4">
@@ -355,6 +356,8 @@ const EditProfilePage = () => {
           </div>
         </div>
       </div>
+      <Footer />
+
     </>
   );
 };

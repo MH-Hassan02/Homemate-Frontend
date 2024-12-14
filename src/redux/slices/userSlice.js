@@ -1,8 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { toast } from "react-toastify";
 
-
-// Async thunk to register user
 export const registerUser = createAsyncThunk(
   "user/register",
   async (userData, { rejectWithValue }) => {
@@ -11,11 +10,26 @@ export const registerUser = createAsyncThunk(
         `${import.meta.env.VITE_BASE_URL}/auth/signup`,
         userData
       );
-      alert(response.data.message)
+
+      if (response.status === 200) {
+        toast.success(response.data.message, {
+          autoClose: 3000,
+          pauseOnHover: false,
+          draggable: false,
+        });
+      }
+
       return response.data;
     } catch (error) {
-      console.error("Error signing user", error)
-      return rejectWithValue(error.response.data || error.message);
+      toast.error(
+        error.response?.data?.message,
+        {
+          autoClose: 3000,
+          pauseOnHover: false,
+          draggable: false,
+        }
+      );
+      return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
@@ -30,10 +44,21 @@ export const loginUser = createAsyncThunk(
         loginData
       );
       localStorage.setItem("authToken", response.data.token);
-      console.log(response.data, "Login response");
+      toast.success(response.data.message, {
+        autoClose: 3000,
+        pauseOnHover: false,
+        draggable: false,
+      });
       return response.data;
     } catch (error) {
-      console.error("Error during login", error)
+      toast.error(
+        error.response?.data?.message,
+        {
+          autoClose: 3000,
+          pauseOnHover: false,
+          draggable: false,
+        }
+      );
       return rejectWithValue(error.response.data || error.message);
     }
   }
@@ -41,22 +66,24 @@ export const loginUser = createAsyncThunk(
 
 // Async thunk to fetch user data
 export const fetchUser = createAsyncThunk(
-  'user/fetchUser',
+  "user/fetchUser",
   async (_, { rejectWithValue }) => {
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem("authToken");
     if (!token) {
-      return rejectWithValue('No token found');
+      return rejectWithValue("No token found");
     }
     try {
-      const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/auth/refetch`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      console.log(response.data, "response.data")
+      const response = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/auth/refetch`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       return response.data;
     } catch (error) {
-      localStorage.removeItem('authToken');
+      localStorage.removeItem("authToken");
       return rejectWithValue(error.response.data || error.message);
     }
   }

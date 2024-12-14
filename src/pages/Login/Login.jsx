@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../redux/slices/userSlice";
 import logo from "../../assets/PurpleL.png";
 import mainImg from "../../assets/lgP.jpg";
 import "./Login.css";
+import { ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
+
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -18,6 +21,7 @@ const Login = () => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+  const location = useLocation();
 
   useEffect(() => {
     if (userInfo) {
@@ -25,14 +29,26 @@ const Login = () => {
     }
   }, [userInfo, navigate]);
 
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const message = params.get("message");
 
- 
+    if (message) {
+      toast.success(message, {
+        autoClose: 3000,
+        pauseOnHover: false,
+        draggable: false,
+      });
+    }
+  }, [location]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(loginUser(formData));
   };
 
   return (
+    <>
     <div className="flex justify-between h-screen font-Poppins overflow-hidden">
       {/* Left side: Form */}
       <div className="w-full md:w-1/2 bg-gray-50 flex flex-col justify-center items-center p-8">
@@ -87,7 +103,8 @@ const Login = () => {
         </div>
       </div>
     </div>
+    <ToastContainer />
+    </>
   );
 };
-
 export default Login;

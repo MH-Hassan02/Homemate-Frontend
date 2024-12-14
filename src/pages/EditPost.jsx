@@ -19,8 +19,12 @@ import "leaflet/dist/leaflet.css";
 import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { useSelector } from "react-redux";
-import { fetchPostById } from "../redux/slices/postSlice"; // Update this path based on your structure
+import { fetchPostById } from "../redux/slices/postSlice";
 import { useDispatch } from "react-redux";
+import Footer from "../components/Footer/Footer";
+import { ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const amenitiesOptions = [
   { id: 1, label: "Wi-Fi", icon: <BsWifi /> },
@@ -33,6 +37,15 @@ const amenitiesOptions = [
   { id: 8, label: "Security", icon: <BsHouseDoor /> },
   { id: 9, label: "Heating", icon: <FaFireExtinguisher /> },
   { id: 10, label: "Air Conditioning", icon: <FiCheckSquare /> },
+];
+
+const areaOptions = [
+  "Malir",
+  "Jauhar",
+  "Maymar",
+  "Bahadurabad",
+  "Saddar",
+  "Gulshan",
 ];
 
 function LocationInput({ location, setLocation }) {
@@ -71,10 +84,11 @@ const EditPost = () => {
 
   // Fetch post from Redux state
   const post = useSelector((state) => state.posts.post);
-  console.log(post);
-  
+
   const [selectedAmenities, setSelectedAmenities] = useState([]);
   const [showAmenities, setShowAmenities] = useState(false);
+  const [selectedArea, setSelectedArea] = useState([]);
+  const [showArea, setShowArea] = useState(false);
   const [location, setLocation] = useState(null);
   const [images, setImages] = useState([]);
   const [utilityBill, setUtilityBill] = useState(null);
@@ -87,7 +101,6 @@ const EditPost = () => {
   const [selectedImages, setSelectedImages] = useState([]);
 
   const token = localStorage.getItem("authToken");
-
 
   const {
     register,
@@ -113,8 +126,8 @@ const EditPost = () => {
       setValue("beds", post.details[0]?.bedsAvailable);
       setValue("deposit", post.deposit);
       setValue("rent", post.price);
-      setValue("area", post.area);
       setSelectedAmenities(post.amenities);
+      setSelectedArea(post.area);
       setLocation([post.location.latitude, post.location.longitude]);
       setUtilityBillUrl(post.utilityBill);
       setImages(post.images);
@@ -130,6 +143,11 @@ const EditPost = () => {
         ? prev.filter((item) => item !== amenity)
         : [...prev, amenity]
     );
+  };
+
+  const handleAreaChange = (option) => {
+    setSelectedArea(option);
+    setShowArea(false);
   };
 
   const handleImageChange = (event) => {
@@ -163,9 +181,12 @@ const EditPost = () => {
           },
         }
       );
-      console.log("Old utility bill deleted from Cloudinary.");
     } catch (error) {
-      console.error("Error deleting utility bill:", error);
+      toast.error(`Error deleting utility bill: ${error?.message || ""}`, {
+        autoClose: 3000,
+        pauseOnHover: false,
+        draggable: false,
+      });
     }
   };
 
@@ -188,39 +209,51 @@ const EditPost = () => {
       );
       return response.data.imageUrls;
     } catch (error) {
-      console.error("Error uploading images:", error);
+      toast.error(`Error uploading images: ${error?.message || ""}`, {
+        autoClose: 3000,
+        pauseOnHover: false,
+        draggable: false,
+      });
       throw error;
     }
   };
 
   const handleRemoveImage = (index) => {
     const removedImage = images[index];
-    setRemovedImages((prev) => [...prev, removedImage]); 
+    setRemovedImages((prev) => [...prev, removedImage]);
     setImages((prevImages) => prevImages.filter((_, i) => i !== index));
   };
 
   const onSubmit = async (data) => {
     if (!utilityBill && !utilityBillFile) {
-      alert("Please upload at least one utility bill image.");
+      toast.error("Please upload at least one utility bill image.", {
+        autoClose: 3000,
+        pauseOnHover: false,
+        draggable: false,
+      });
       return;
     }
 
     if (selectedImages.length === 0 && images.length === 0) {
-      alert("Please upload at least one regular image.");
-      return; 
+      toast.error("Please upload at least one regular image.", {
+        autoClose: 3000,
+        pauseOnHover: false,
+        draggable: false,
+      });
+      return;
     }
 
     setIsLoading(true);
 
     try {
-      let newUtilityBillUrl = utilityBillUrl; 
+      let newUtilityBillUrl = utilityBillUrl;
 
       if (utilityBill && utilityBillFile) {
         newUtilityBillUrl = await uploadUtilityBill(utilityBill);
       }
 
       if (utilityBill && utilityBillUrl && utilityBillFile) {
-        await deleteUtilityBill(id); 
+        await deleteUtilityBill(id);
       }
 
       for (const removedImage of removedImages) {
@@ -229,7 +262,7 @@ const EditPost = () => {
 
       let imageUrls = [];
       if (selectedImages.length > 0) {
-        imageUrls = await uploadImages(selectedImages); 
+        imageUrls = await uploadImages(selectedImages);
 
         const filteredImages = images.filter(
           (image) => typeof image === "string" && image.trim() !== ""
@@ -243,14 +276,15 @@ const EditPost = () => {
       const postData = {
         title: data.title,
         description: data.description,
-        images: imageUrls, 
-        utilityBill: newUtilityBillUrl, 
+        images: imageUrls,
+        utilityBill: newUtilityBillUrl,
         address: data.address,
         peopleLiving: data.people,
         bedsAvailable: data.beds,
         deposit: data.deposit,
         price: data.rent,
         amenities: selectedAmenities,
+        area: selectedArea,
         location: {
           latitude: location[0],
           longitude: location[1],
@@ -267,11 +301,20 @@ const EditPost = () => {
         }
       );
 
-      alert("Post updated successfully!");
-      navigate(`/`);
+      toast.success("Post created successfully!", {
+        autoClose: 3000,
+        pauseOnHover: false,
+        draggable: false,
+        onClose: () => {
+          navigate("/");
+        },
+      });
     } catch (error) {
-      console.error("Error updating post:", error);
-      alert("Error updating post. Please try again.");
+      toast.error(`Error updating post: ${error?.message || ""}`, {
+        autoClose: 3000,
+        pauseOnHover: false,
+        draggable: false,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -279,18 +322,21 @@ const EditPost = () => {
 
   const deleteImageFromCloudinary = async (imageUrl, postId) => {
     try {
-      await axios.delete(
-        `${import.meta.env.VITE_BASE_URL}/api/upload/images`,
+      await axios.delete(`${import.meta.env.VITE_BASE_URL}/api/upload/images`, {
+        data: { imageUrl, postId },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    } catch (error) {
+      toast.error(
+        `Error deleting image from Cloudinary: ${error?.message || ""}`,
         {
-          data: { imageUrl, postId },
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          autoClose: 3000,
+          pauseOnHover: false,
+          draggable: false,
         }
       );
-      console.log("Image deleted from Cloudinary:", imageUrl);
-    } catch (error) {
-      console.error("Error deleting image from Cloudinary:", error);
     }
   };
 
@@ -310,7 +356,11 @@ const EditPost = () => {
       );
       return response.data.imageUrl;
     } catch (error) {
-      console.error("Error uploading utility bill:", error);
+      toast.error(`Error uploading utility bill: ${error?.message || ""}`, {
+        autoClose: 3000,
+        pauseOnHover: false,
+        draggable: false,
+      });
       throw error;
     }
   };
@@ -494,13 +544,6 @@ const EditPost = () => {
                   key={amenity.id}
                   className="flex items-center justify-between p-2 rounded-md hover:bg-gray-100 cursor-pointer"
                 >
-                  <input
-                    type="checkbox"
-                    id={amenity.label}
-                    checked={selectedAmenities.includes(amenity.label)}
-                    onChange={() => handleAmenityChange(amenity.label)}
-                    className="h-5 w-5 text-primary focus:ring-primary border-gray-300 rounded"
-                  />
                   <label
                     htmlFor={amenity.label}
                     className="flex items-center space-x-2"
@@ -508,23 +551,72 @@ const EditPost = () => {
                     {amenity.icon}
                     <span className="ml-2">{amenity.label}</span>
                   </label>
+                  <input
+                    type="checkbox"
+                    id={amenity.label}
+                    checked={selectedAmenities.includes(amenity.label)}
+                    onChange={() => handleAmenityChange(amenity.label)}
+                    className="h-5 w-5 text-primary focus:ring-primary border-gray-300 rounded"
+                  />
                 </div>
               ))}
             </div>
           )}
         </div>
 
-        <div className="w-full">
-            <input
-              {...register("area", { required: "area is required" })}
-              type="text"
-              placeholder="area"
-              className="border-2 border-primary rounded-md p-2 focus:outline-none focus:border-primary w-full"
-            />
-            {errors.deposit && (
-              <span className="text-red-500">{errors.deposit.message}</span>
-            )}
-          </div>
+        <h1 className="text-4xl font-semibold font-Poppins">Area</h1>
+        <div className="relative w-full">
+          <button
+            type="button"
+            className="w-full text-left border-2 border-primary rounded-md p-2 focus:outline-none focus:border-primary flex justify-between items-center"
+            onClick={() => setShowArea(!showArea)}
+            aria-haspopup="listbox"
+            aria-expanded={showArea ? "true" : "false"}
+          >
+            {selectedArea ? selectedArea : "Select an Area"}
+            <svg
+              className={`w-5 h-5 transition-transform ${
+                showArea ? "transform rotate-180" : ""
+              }`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M19 9l-7 7-7-7"
+              ></path>
+            </svg>
+          </button>
+
+          {showArea && (
+            <ul
+              role="listbox"
+              className="relative z-10 mt-1 w-full bg-white border-2 border-primary rounded-md shadow-lg max-h-60 overflow-auto focus:outline-none"
+            >
+              {areaOptions.map((option, index) => (
+                <li
+                  key={index}
+                  className={`p-2 cursor-pointer hover:bg-primary hover:text-white ${
+                    selectedArea === option
+                      ? "bg-primary text-white"
+                      : "text-black"
+                  }`}
+                  onClick={() => {
+                    handleAreaChange(option);
+                  }}
+                  role="option"
+                  aria-selected={selectedArea === option ? "true" : "false"}
+                >
+                  {option}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
 
         <h1 className="text-4xl font-semibold font-Poppins">Location</h1>
         <LocationInput location={location} setLocation={setLocation} />
@@ -539,6 +631,8 @@ const EditPost = () => {
           {isLoading ? "Updating..." : "Update Post"}
         </button>
       </form>
+      <Footer />
+      <ToastContainer />
     </>
   );
 };

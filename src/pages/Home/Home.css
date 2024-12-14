@@ -15,6 +15,10 @@
   z-index: -1;
 }
 
+.cardSection {
+  margin-top: 50px;
+}
+
 .featuredHead h1 {
   font-size: 32px;
   font-weight: 600;
@@ -23,17 +27,17 @@
 }
 
 .featuredContent {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
-  justify-content: start;
   width: 90%;
   margin: auto;
 }
 
-.featuredContent > div {
-  flex: 1 1 250px;
-  max-width: 300px;
+@media only screen and (min-width: 2000px) {
+  .bgPicContainer {
+    height: 700px;
+  }
 }
 
 @media only screen and (max-width: 1200px) {
@@ -46,34 +50,22 @@
   .featuredHead h1 {
     font-size: 28px;
   }
-  .featuredContent > div {
-    flex: 1 1 220px;
-  }
 }
 
 @media only screen and (max-width: 768px) {
   .featuredHead h1 {
     font-size: 26px;
   }
-  .featuredContent > div {
-    flex: 1 1 45%;
-  }
 }
 
 @media only screen and (max-width: 450px) {
-  .bgPicContainer{
+  .bgPicContainer {
     height: calc(100vh - 57px);
   }
-  .featuredContent{
-    justify-content: center;
+  .featuredContent {
+    grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
   }
   .featuredHead h1 {
     font-size: 24px;
-  }
-  .cardContainer {
-    width: 95%;
-  }
-  .featuredContent > div {
-    flex: 1 1 100%;
   }
 }

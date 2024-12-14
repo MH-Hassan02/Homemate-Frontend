@@ -57,6 +57,13 @@ footer span {
   justify-content: center;
 }
 
+.boxSocial{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .footerLogo {
   display: flex;
   align-items: center;

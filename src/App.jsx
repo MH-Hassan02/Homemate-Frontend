@@ -17,7 +17,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { useEffect, useState } from "react";
 import Explore from "./pages/Explore/Explore.jsx";
-import PostsByArea from "./components/PostsByArea.jsx";
+import PostsByArea from "./pages/PostsByArea.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
 import loadingAnimation from "./assets/Animation.gif";
 
@@ -35,7 +35,11 @@ function App() {
     <div className="mb-16 md:mb-0">
       {loading ? (
         <div className="loadingContainer">
-          <img src={loadingAnimation} alt="Loading..." className="loadingImage" />
+          <img
+            src={loadingAnimation}
+            alt="Loading..."
+            className="loadingImage"
+          />
         </div>
       ) : (
         <ScrollToTop />

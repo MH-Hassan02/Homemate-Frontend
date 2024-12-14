@@ -27,6 +27,9 @@
 .card-content {
   padding: 16px;
   background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .card-title {
@@ -46,6 +49,27 @@
   font-size: 14px;
   color: red;
   margin: 4px 0;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.favorite-icon {
+  font-size: 16px;
+  color: red;
+  padding: 5px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.view-details {
+  font-size: 14px;
+  color: blue;
+  cursor: pointer;
 }
 
 .slick-dots {
@@ -102,17 +126,4 @@
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-/* Favorite icon styling */
-.favorite-icon {
-  position: absolute;
-  bottom: 15px;
-  right: 10px;
-  font-size: 16px;
-  color: red;
-  padding: 5px;
-  border-radius: 50%;
-  cursor: pointer;
-  z-index: 1;
 }

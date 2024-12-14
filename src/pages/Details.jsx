@@ -12,14 +12,6 @@ const Details = () => {
   const [post, setPost] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
 
-  // const navigate = useNavigate();
-  // const { userInfo } = useSelector((state) => state.user);
-  // useEffect(() => {
-  //   if (!userInfo) {
-  //     navigate("/login");
-  //   }
-  // }, [userInfo, navigate]);
-
   useEffect(() => {
     const fetchPost = async () => {
       try {

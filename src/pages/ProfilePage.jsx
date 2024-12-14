@@ -13,6 +13,7 @@ import {
   FiLogOut,
 } from "react-icons/fi";
 import { logout } from "../redux/slices/userSlice";
+import Footer from "../components/Footer/Footer";
 
 const ProfilePage = () => {
   const [avatar, setAvatar] = useState(null);
@@ -110,7 +111,7 @@ const ProfilePage = () => {
   return (
     <>
       <Navbar />
-      <div className="bg-gray-100 min-h-screen flex flex-col items-center">
+      <div className="min-h-100% flex flex-col items-center">
         <div className="w-full max-w-4xl mt-8 p-4">
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-3xl font-semibold">Profile</h1>
@@ -222,6 +223,8 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
+      <Footer />
+
     </>
   );
 };

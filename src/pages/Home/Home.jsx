@@ -9,7 +9,7 @@ import Hero from "../../components/Hero/Hero";
 import Location from "../../components/Location/Location";
 import LocationMobile from "../../components/Location/LocationMobile";
 import Card from "../../components/Card/Card";
-import bgImage from "../../images/homepage-background.png"
+import bgImage from "../../images/homepage-background.png";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
@@ -46,18 +46,14 @@ const Home = () => {
   return (
     <>
       <div className="bgPicContainer">
-  <img 
-    src={bgImage} 
-    alt="Background" 
-    className="bgImage" 
-  />
-  <Navbar />
-  <Hero />
-</div>
+        <img src={bgImage} alt="Background" className="bgImage" />
+        <Navbar />
+        <Hero />
+      </div>
 
       {isMobile ? <LocationMobile /> : <Location />}
 
-      <div className="cardContainer" data-aos="fade-up" data-aos-duration="500">
+      <div className="cardSection" data-aos="fade-up" data-aos-duration="500">
         <div className="featuredHead">
           <h1>Featured Hostels</h1>
         </div>
@@ -68,7 +64,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="cardContainer" data-aos="fade-up" data-aos-duration="500">
+      <div className="cardSection" data-aos="fade-up" data-aos-duration="500">
         <div className="featuredHead">
           <h1>Top Rated Hostels</h1>
         </div>

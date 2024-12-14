@@ -54,7 +54,7 @@ const Rating = ({ post }) => {
       <div className="rating-container">
         <div className="rating-value">
           <img src={leaf1} alt="Leaf" className="leaf" />
-          <span>{post?.rating?.main?.toFixed(2) || "N/A"}</span>
+          <span>{(post?.rating?.main === 0 || post?.rating?.main == null) ? "N/A" : post?.rating?.main?.toFixed(2)}</span>
           <img src={leaf2} alt="Leaf" className="leaf" />
         </div>
 
