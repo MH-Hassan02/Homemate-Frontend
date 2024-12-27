@@ -4,6 +4,7 @@ import Banner from "../../images/ExploreBanner.jpg";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer/Footer";
 import Card from "../../components/Card/Card";
+import animation from "../../assets/Animation Explore.gif"
 import "./Explore.css";
 
 const Explore = () => {
@@ -47,7 +48,9 @@ const Explore = () => {
         </div>
         <div className="cardsContainer">
           {loading ? (
-            <div className="text-center">Loading posts...</div>
+            <div className="animationContainer">
+              <img src={animation} alt="" />
+            </div>
           ) : error ? (
             <div className="text-center text-red-500">{error}</div>
           ) : posts.length > 0 ? (

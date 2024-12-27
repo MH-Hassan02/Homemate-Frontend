@@ -29,6 +29,13 @@
   height: 100px;
 }
 
+.animationContainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
 
 @media only screen and (min-width: 1400px) {
   .detailsPageContainer {

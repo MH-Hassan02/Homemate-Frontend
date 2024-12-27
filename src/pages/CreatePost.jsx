@@ -204,12 +204,12 @@ const CreatePost = () => {
       } else {
         // Create FormData for image uploads
         const formDataImages = new FormData();
-        images.forEach((image) => formDataImages.append("images", image)); // Append images
+        images.forEach((image) => formDataImages.append("images", image));
 
         // Upload images to Cloudinary
         const responseImages = await axios.post(
           `${import.meta.env.VITE_BASE_URL}/api/upload/images`,
-          formDataImages, // FormData should be the second argument
+          formDataImages,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -219,7 +219,7 @@ const CreatePost = () => {
         );
 
         // Ensure API returns an array of image URLs
-        const imageUrls = responseImages.data.imageUrls || []; // Modify according to actual API response
+        const imageUrls = responseImages.data.imageUrls || [];
 
         // Upload utility bill if provided
         let utilityBillUrl = null;
@@ -279,12 +279,14 @@ const CreatePost = () => {
         );
 
         if (response.status === 200) {
+          const createdPostId = response.data._id;
+
           toast.success("Post created successfully!", {
             autoClose: 3000,
             pauseOnHover: false,
             draggable: false,
             onClose: () => {
-              navigate("/");
+              navigate(`/post/${createdPostId}`);
             },
           });
         } else {
@@ -305,7 +307,7 @@ const CreatePost = () => {
         }
       );
     } finally {
-      setIsLoading(false); // Reset loading state
+      setIsLoading(false);
     }
   };
 

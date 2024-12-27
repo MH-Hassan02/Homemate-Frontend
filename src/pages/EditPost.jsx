@@ -291,7 +291,7 @@ const EditPost = () => {
         },
       };
 
-      await axios.put(
+      const response = await axios.put(
         `${import.meta.env.VITE_BASE_URL}/posts/editPost/${id}`,
         postData,
         {
@@ -301,14 +301,24 @@ const EditPost = () => {
         }
       );
 
-      toast.success("Post created successfully!", {
-        autoClose: 3000,
-        pauseOnHover: false,
-        draggable: false,
-        onClose: () => {
-          navigate("/");
-        },
-      });
+      if (response.status === 200) {
+        const updatedPostId = response.data._id;
+
+        toast.success("Post updated successfully!", {
+          autoClose: 3000,
+          pauseOnHover: false,
+          draggable: false,
+          onClose: () => {
+            navigate(`/post/${updatedPostId}`);
+          },
+        });
+      } else {
+        toast.error("Failed to update post. Please try again.", {
+          autoClose: 3000,
+          pauseOnHover: false,
+          draggable: false,
+        });
+      }
     } catch (error) {
       toast.error(`Error updating post: ${error?.message || ""}`, {
         autoClose: 3000,

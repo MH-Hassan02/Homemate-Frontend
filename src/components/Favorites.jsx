@@ -5,6 +5,7 @@ import Navbar from "./Navbar.jsx";
 import Footer from "./Footer/Footer.jsx";
 import Card from "./Card/Card.jsx";
 import { useNavigate } from "react-router-dom";
+import animation from "../assets/Animation Explore.gif";
 
 const Favorites = () => {
   const dispatch = useDispatch();
@@ -24,8 +25,6 @@ const Favorites = () => {
     }
   }, [userInfo]);
 
-  if (loading) return <div className="text-center text-xl">Loading...</div>;
-
   const errorMessage = error?.message || "An unexpected error occurred.";
   if (error)
     return (
@@ -41,24 +40,30 @@ const Favorites = () => {
         <h1 className="text-3xl font-semibold text-center mb-6">
           Your Favorites
         </h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {favorites && favorites.length > 0 ? (
-            favorites.map((post) => {
-              if (post._id) {
-                return (
-                  <div key={post._id} className="flex justify-center">
-                    <Card post={post} />
-                  </div>
-                );
-              }
-              return null;
-            })
-          ) : (
-            <div className="col-span-full text-center text-xl text-gray-600">
-              No favorites found.
-            </div>
-          )}
-        </div>
+        {loading ? (
+          <div className="animationContainer">
+            <img src={animation} alt="" />
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {favorites && favorites.length > 0 ? (
+              favorites.map((post) => {
+                if (post._id) {
+                  return (
+                    <div key={post._id} className="flex justify-center">
+                      <Card post={post} />
+                    </div>
+                  );
+                }
+                return null;
+              })
+            ) : (
+              <div className="col-span-full text-center text-xl text-gray-600">
+                No favorites found.
+              </div>
+            )}
+          </div>
+        )}
       </div>
       <Footer />
     </>
